@@ -1,7 +1,8 @@
+// TodoList.tsx
 import React, { useReducer } from 'react';
-import Todo from '../toDo/toDo'
+import { List, Typography, Container } from '@mui/material';
+import Todo from '../toDo/toDo';
 import TodoForm from '../toDoForm/toDoForm';
-
 
 type Action =
   | { type: 'ADD_TODO'; text: string }
@@ -11,7 +12,12 @@ type Action =
 const todoReducer = (state: Todo[], action: Action): Todo[] => {
   switch (action.type) {
     case 'ADD_TODO':
-      return [{ id: state.length + 1, text: action.text, completed: false }, ...state];
+      const newTodo: Todo = {
+        id: new Date().getTime(),
+        text: action.text,
+        completed: false,
+      };
+      return [newTodo, ...state];
     case 'TOGGLE_TODO':
       return state.map((todo) =>
         todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
@@ -23,26 +29,29 @@ const todoReducer = (state: Todo[], action: Action): Todo[] => {
   }
 };
 
-const TodoList: React.FC = () => {
+function TodoList() {
   const [todos, dispatch] = useReducer(todoReducer, []);
 
-  const handleAddTodo = (text: string) => {
+  function handleAddTodo(text: string): void {
     dispatch({ type: 'ADD_TODO', text });
-  };
+  }
 
-  const handleToggleTodo = (id: number) => {
+  function handleToggleTodo(id: number): void {
     dispatch({ type: 'TOGGLE_TODO', id });
-  };
+  }
 
-  const handleRemoveTodo = (id: number) => {
+  function handleRemoveTodo(id: number): void {
     dispatch({ type: 'REMOVE_TODO', id });
-  };
+  }
 
   return (
-    <div>
-      <h2>Todo List</h2>
+    <Container>
+      <Typography variant="h3" align="left" sx={{ mt: '2rem' }} gutterBottom>
+      
+        Todo List
+      </Typography>
       <TodoForm onAddTodo={handleAddTodo} />
-      <ul>
+      <List>
         {todos.map((todo) => (
           <Todo
             key={todo.id}
@@ -51,9 +60,9 @@ const TodoList: React.FC = () => {
             onRemoveTodo={handleRemoveTodo}
           />
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
-};
+}
 
 export default TodoList;
