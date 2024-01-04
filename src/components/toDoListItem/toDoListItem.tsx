@@ -3,14 +3,10 @@ import React from 'react';
 import { Checkbox, ListItem, ListItemText, IconButton } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Todo from '../../types/toDoType';
 
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
 
-interface TodoProps {
+type TodoProps = {
   todo: Todo;
   onToggleTodo: (id: number) => void;
   onRemoveTodo: (id: number) => void;
@@ -22,7 +18,7 @@ const useStyles = makeStyles({
   },
 }) ;
 
-function Todo({ todo, onToggleTodo, onRemoveTodo }: TodoProps) {
+function TodoListItem({ todo, onToggleTodo, onRemoveTodo }: TodoProps) {
   const classes = useStyles();
 
   return (
@@ -33,7 +29,7 @@ function Todo({ todo, onToggleTodo, onRemoveTodo }: TodoProps) {
       />
       <ListItemText
         disableTypography
-        primary={todo.text}
+        primary={todo.title}
         className={todo.completed ? classes.completed : ''}
       />
       <IconButton onClick={() => onRemoveTodo(todo.id)} aria-label="Delete">
@@ -43,5 +39,5 @@ function Todo({ todo, onToggleTodo, onRemoveTodo }: TodoProps) {
   );
 }
 
-export default Todo;
+export default TodoListItem;
 
